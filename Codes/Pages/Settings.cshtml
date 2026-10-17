@@ -1,0 +1,26 @@
+﻿@page
+@model MinorProject3.Pages.SettingsModel
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">⚙️ App Settings</h2>
+
+    @if (Model.SavedMessage != null)
+    {
+        <div class="alert alert-success">@Model.SavedMessage</div>
+    }
+
+    <form method="post" class="card p-4 shadow-sm">
+        <div class="mb-3 form-check">
+            <input type="checkbox" asp-for="DarkMode" class="form-check-input" id="darkModeCheck" />
+            <label class="form-check-label fw-bold text-body" for="darkModeCheck">Enable Dark Mode theme</label>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" asp-for="AskBeforeDelete" class="form-check-input" id="deleteCheck" />
+            <label class="form-check-label fw-bold text-body" for="deleteCheck">Ask me before deleting things</label>
+        </div>
+        <button type="submit" class="btn btn-primary w-25">Save Settings</button>
+    </form>
+</div>

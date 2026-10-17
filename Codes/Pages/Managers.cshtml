@@ -1,0 +1,74 @@
+﻿@page
+@model MinorProject3.Pages.ManagersModel
+@{
+    ViewData["Title"] = "Managers Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">👔 Premier League Managers</h2>
+
+    <!-- Add Manager Form -->
+    <div class="card p-3 mb-4 shadow-sm">
+        <h5>Add a New Manager</h5>
+        <form method="post" asp-page-handler="Add" class="row g-3">
+            <div class="col-md-3">
+                <input type="text" asp-for="FirstName" class="form-control" placeholder="First Name" required />
+            </div>
+            <div class="col-md-3">
+                <input type="text" asp-for="LastName" class="form-control" placeholder="Last Name" required />
+            </div>
+            <div class="col-md-2">
+                <input type="text" asp-for="TacticalStyle" class="form-control" placeholder="Tactical Style" />
+            </div>
+            <div class="col-md-2">
+                <select asp-for="ClubID" class="form-select">
+                    <option value="">(no club)</option>
+                    @if (Model.ClubsTable != null)
+                    {
+                        foreach (System.Data.DataRow row in Model.ClubsTable.Rows)
+                        {
+                            <option value="@row["ClubID"]">@row["ClubName"]</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">Add Manager</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Managers Table -->
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Tactical Style</th>
+                <th>Club</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ManagersTable != null)
+            {
+                foreach (System.Data.DataRow row in Model.ManagersTable.Rows)
+                {
+                    <tr>
+                        <td>@row["ManagerID"]</td>
+                        <td>@row["FirstName"]</td>
+                        <td>@row["LastName"]</td>
+                        <td>@row["TacticalStyle"]</td>
+                        <td>@(row["ClubName"] == DBNull.Value ? "None" : row["ClubName"])</td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@row["ManagerID"]" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Really delete this manager?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

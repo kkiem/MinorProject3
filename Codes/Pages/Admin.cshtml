@@ -1,0 +1,60 @@
+﻿@page
+@model MinorProject3.Pages.AdminModel
+@{
+    ViewData["Title"] = "Admin Console";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">🛠️ Admin Console: Alter Restricted Club Metadata</h2>
+
+    <!-- Add/Edit Club Form -->
+    <div class="card p-3 mb-4 shadow-sm">
+        <h5>Club Management</h5>
+        <form method="post" asp-page-handler="Add" class="row g-3">
+            <div class="col-md-3">
+                <input type="text" asp-for="ClubName" class="form-control" placeholder="Club Name" required />
+            </div>
+            <div class="col-md-3">
+                <input type="text" asp-for="City" class="form-control" placeholder="City" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" asp-for="Stadium" class="form-control" placeholder="Stadium" />
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Add Club</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Clubs Table -->
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Club ID</th>
+                <th>Club Name</th>
+                <th>City</th>
+                <th>Stadium</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ClubsTable != null)
+            {
+                foreach (System.Data.DataRow row in Model.ClubsTable.Rows)
+                {
+                    <tr>
+                        <td>@row["ClubID"]</td>
+                        <td>@row["ClubName"]</td>
+                        <td>@row["City"]</td>
+                        <td>@row["Stadium"]</td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@row["ClubID"]" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Really delete this club? Make sure no players or managers are still assigned to it!');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
